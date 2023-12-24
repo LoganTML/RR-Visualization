@@ -1,0 +1,508 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="darrow-lykos">darrow-lykos</option>
+                                
+                                    <option value="cassius-bellona">cassius-bellona</option>
+                                
+                                    <option value="virginia-augustus">virginia-augustus</option>
+                                
+                                    <option value="eo-lykos">eo-lykos</option>
+                                
+                                    <option value="sevro-barca">sevro-barca</option>
+                                
+                                    <option value="titus-ladros">titus-ladros</option>
+                                
+                                    <option value="pax-telemanus">pax-telemanus</option>
+                                
+                                    <option value="ugly-dan">ugly-dan</option>
+                                
+                                    <option value="adrius-augustus">adrius-augustus</option>
+                                
+                                    <option value="julian-bellona">julian-bellona</option>
+                                
+                                    <option value="roque-gold">roque-gold</option>
+                                
+                                    <option value="tactus-rath">tactus-rath</option>
+                                
+                                    <option value="matteo-pink">matteo-pink</option>
+                                
+                                    <option value="mickey-carver">mickey-carver</option>
+                                
+                                    <option value="lea-gold">lea-gold</option>
+                                
+                                    <option value="fitchner-barca">fitchner-barca</option>
+                                
+                                    <option value="harmony-red">harmony-red</option>
+                                
+                                    <option value="antonia-julii">antonia-julii</option>
+                                
+                                    <option value="vixus-sarna">vixus-sarna</option>
+                                
+                                    <option value="narol-lykos">narol-lykos</option>
+                                
+                                    <option value="milia-trachus">milia-trachus</option>
+                                
+                                    <option value="quinn-gold">quinn-gold</option>
+                                
+                                    <option value="nero-augustus">nero-augustus</option>
+                                
+                                    <option value="evey-pink">evey-pink</option>
+                                
+                                    <option value="leanna-lykos">leanna-lykos</option>
+                                
+                                    <option value="loran-lykos">loran-lykos</option>
+                                
+                                    <option value="cassandra-gold">cassandra-gold</option>
+                                
+                                    <option value="nyla-gold">nyla-gold</option>
+                                
+                                    <option value="thistle-gold">thistle-gold</option>
+                                
+                                    <option value="priam-gold">priam-gold</option>
+                                
+                                    <option value="kieran-lykos">kieran-lykos</option>
+                                
+                                    <option value="barlow-lykos">barlow-lykos</option>
+                                
+                                    <option value="dio-lykos">dio-lykos</option>
+                                
+                                    <option value="apollo-gold">apollo-gold</option>
+                                
+                                    <option value="octavia-lune">octavia-lune</option>
+                                
+                                    <option value="pebble-gold">pebble-gold</option>
+                                
+                                    <option value="clown-gold">clown-gold</option>
+                                
+                                    <option value="tamara-gold">tamara-gold</option>
+                                
+                                    <option value="iro-lykos">iro-lykos</option>
+                                
+                                    <option value="ralph-red">ralph-red</option>
+                                
+                                    <option value="june-gold">june-gold</option>
+                                
+                                    <option value="nexus-celintus">nexus-celintus</option>
+                                
+                                    <option value="dale-lykos">dale-lykos</option>
+                                
+                                    <option value="liam-lykos">liam-lykos</option>
+                                
+                                    <option value="varlo-red">varlo-red</option>
+                                
+                                    <option value="lorn-arcos">lorn-arcos</option>
+                                
+                                    <option value="tiberius-gold">tiberius-gold</option>
+                                
+                                    <option value="karnus-bellona">karnus-bellona</option>
+                                
+                                    <option value="dain-lykos">dain-lykos</option>
+                                
+                                    <option value="reagan-red">reagan-red</option>
+                                
+                                    <option value="arria-gold">arria-gold</option>
+                                
+                                    <option value="screwface-gold">screwface-gold</option>
+                                
+                                    <option value="weed-gold">weed-gold</option>
+                                
+                                    <option value="timony-podginus">timony-podginus</option>
+                                
+                                    <option value="bondilus-copper">bondilus-copper</option>
+                                
+                                    <option value="dago-gamma">dago-gamma</option>
+                                
+                                    <option value="dancer-red">dancer-red</option>
+                                
+                                    <option value="kora-lykos">kora-lykos</option>
+                                
+                                    <option value="cipio-gold">cipio-gold</option>
+                                
+                                    <option value="clintus-gold">clintus-gold</option>
+                                
+                                    <option value="dax-gold">dax-gold</option>
+                                
+                                    <option value="lilath-faran">lilath-faran</option>
+                                
+                                    <option value="bacchus-gold">bacchus-gold</option>
+                                
+                                    <option value="ceres-gold">ceres-gold</option>
+                                
+                                    <option value="diana-gold">diana-gold</option>
+                                
+                                    <option value="juno-gold">juno-gold</option>
+                                
+                                    <option value="jupiter-gold">jupiter-gold</option>
+                                
+                                    <option value="mercury-gold">mercury-gold</option>
+                                
+                                    <option value="pluto-gold">pluto-gold</option>
+                                
+                                    <option value="venus-gold">venus-gold</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "red", "id": "darrow-lykos", "label": "darrow-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "cassius-bellona", "label": "cassius-bellona", "shape": "dot", "size": 10}, {"color": "gold", "id": "virginia-augustus", "label": "virginia-augustus", "shape": "dot", "size": 10}, {"color": "red", "id": "eo-lykos", "label": "eo-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "sevro-barca", "label": "sevro-barca", "shape": "dot", "size": 10}, {"color": "gold", "id": "titus-ladros", "label": "titus-ladros", "shape": "dot", "size": 10}, {"color": "gold", "id": "pax-telemanus", "label": "pax-telemanus", "shape": "dot", "size": 10}, {"color": "grey", "id": "ugly-dan", "label": "ugly-dan", "shape": "dot", "size": 10}, {"color": "gold", "id": "adrius-augustus", "label": "adrius-augustus", "shape": "dot", "size": 10}, {"color": "gold", "id": "julian-bellona", "label": "julian-bellona", "shape": "dot", "size": 10}, {"color": "gold", "id": "roque-gold", "label": "roque-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "tactus-rath", "label": "tactus-rath", "shape": "dot", "size": 10}, {"color": "pink", "id": "matteo-pink", "label": "matteo-pink", "shape": "dot", "size": 10}, {"color": "violet", "id": "mickey-carver", "label": "mickey-carver", "shape": "dot", "size": 10}, {"color": "gold", "id": "lea-gold", "label": "lea-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "fitchner-barca", "label": "fitchner-barca", "shape": "dot", "size": 10}, {"color": "red", "id": "harmony-red", "label": "harmony-red", "shape": "dot", "size": 10}, {"color": "gold", "id": "antonia-julii", "label": "antonia-julii", "shape": "dot", "size": 10}, {"color": "gold", "id": "vixus-sarna", "label": "vixus-sarna", "shape": "dot", "size": 10}, {"color": "red", "id": "narol-lykos", "label": "narol-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "milia-trachus", "label": "milia-trachus", "shape": "dot", "size": 10}, {"color": "gold", "id": "quinn-gold", "label": "quinn-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "nero-augustus", "label": "nero-augustus", "shape": "dot", "size": 10}, {"color": "pink", "id": "evey-pink", "label": "evey-pink", "shape": "dot", "size": 10}, {"color": "red", "id": "leanna-lykos", "label": "leanna-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "loran-lykos", "label": "loran-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "cassandra-gold", "label": "cassandra-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "nyla-gold", "label": "nyla-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "thistle-gold", "label": "thistle-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "priam-gold", "label": "priam-gold", "shape": "dot", "size": 10}, {"color": "red", "id": "kieran-lykos", "label": "kieran-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "barlow-lykos", "label": "barlow-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "dio-lykos", "label": "dio-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "apollo-gold", "label": "apollo-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "octavia-lune", "label": "octavia-lune", "shape": "dot", "size": 10}, {"color": "gold", "id": "pebble-gold", "label": "pebble-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "clown-gold", "label": "clown-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "tamara-gold", "label": "tamara-gold", "shape": "dot", "size": 10}, {"color": "red", "id": "iro-lykos", "label": "iro-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "ralph-red", "label": "ralph-red", "shape": "dot", "size": 10}, {"color": "gold", "id": "june-gold", "label": "june-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "nexus-celintus", "label": "nexus-celintus", "shape": "dot", "size": 10}, {"color": "red", "id": "dale-lykos", "label": "dale-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "liam-lykos", "label": "liam-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "varlo-red", "label": "varlo-red", "shape": "dot", "size": 10}, {"color": "gold", "id": "lorn-arcos", "label": "lorn-arcos", "shape": "dot", "size": 10}, {"color": "gold", "id": "tiberius-gold", "label": "tiberius-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "karnus-bellona", "label": "karnus-bellona", "shape": "dot", "size": 10}, {"color": "red", "id": "dain-lykos", "label": "dain-lykos", "shape": "dot", "size": 10}, {"color": "red", "id": "reagan-red", "label": "reagan-red", "shape": "dot", "size": 10}, {"color": "gold", "id": "arria-gold", "label": "arria-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "screwface-gold", "label": "screwface-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "weed-gold", "label": "weed-gold", "shape": "dot", "size": 10}, {"color": "orange", "id": "timony-podginus", "label": "timony-podginus", "shape": "dot", "size": 10}, {"color": "orange", "id": "bondilus-copper", "label": "bondilus-copper", "shape": "dot", "size": 10}, {"color": "red", "id": "dago-gamma", "label": "dago-gamma", "shape": "dot", "size": 10}, {"color": "red", "id": "dancer-red", "label": "dancer-red", "shape": "dot", "size": 10}, {"color": "red", "id": "kora-lykos", "label": "kora-lykos", "shape": "dot", "size": 10}, {"color": "gold", "id": "cipio-gold", "label": "cipio-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "clintus-gold", "label": "clintus-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "dax-gold", "label": "dax-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "lilath-faran", "label": "lilath-faran", "shape": "dot", "size": 10}, {"color": "gold", "id": "bacchus-gold", "label": "bacchus-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "ceres-gold", "label": "ceres-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "diana-gold", "label": "diana-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "juno-gold", "label": "juno-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "jupiter-gold", "label": "jupiter-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "mercury-gold", "label": "mercury-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "pluto-gold", "label": "pluto-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "venus-gold", "label": "venus-gold", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "darrow-lykos", "to": "cassius-bellona", "width": 4.9344739331306915}, {"from": "darrow-lykos", "to": "virginia-augustus", "width": 4.787491742782046}, {"from": "darrow-lykos", "to": "eo-lykos", "width": 4.718498871295094}, {"from": "darrow-lykos", "to": "sevro-barca", "width": 4.31748811353631}, {"from": "darrow-lykos", "to": "titus-ladros", "width": 4.060443010546419}, {"from": "darrow-lykos", "to": "pax-telemanus", "width": 4.007333185232471}, {"from": "darrow-lykos", "to": "ugly-dan", "width": 3.9889840465642745}, {"from": "darrow-lykos", "to": "adrius-augustus", "width": 3.9318256327243257}, {"from": "darrow-lykos", "to": "julian-bellona", "width": 3.828641396489095}, {"from": "darrow-lykos", "to": "roque-gold", "width": 3.8066624897703196}, {"from": "darrow-lykos", "to": "tactus-rath", "width": 3.6109179126442243}, {"from": "darrow-lykos", "to": "matteo-pink", "width": 3.5553480614894135}, {"from": "darrow-lykos", "to": "mickey-carver", "width": 3.4657359027997265}, {"from": "darrow-lykos", "to": "lea-gold", "width": 3.4657359027997265}, {"from": "darrow-lykos", "to": "fitchner-barca", "width": 3.4011973816621555}, {"from": "darrow-lykos", "to": "harmony-red", "width": 3.332204510175204}, {"from": "darrow-lykos", "to": "antonia-julii", "width": 3.1780538303479458}, {"from": "darrow-lykos", "to": "vixus-sarna", "width": 3.091042453358316}, {"from": "darrow-lykos", "to": "narol-lykos", "width": 3.044522437723423}, {"from": "darrow-lykos", "to": "milia-trachus", "width": 2.995732273553991}, {"from": "darrow-lykos", "to": "quinn-gold", "width": 2.9444389791664403}, {"from": "darrow-lykos", "to": "nero-augustus", "width": 2.8903717578961645}, {"from": "darrow-lykos", "to": "evey-pink", "width": 2.4849066497880004}, {"from": "darrow-lykos", "to": "leanna-lykos", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "loran-lykos", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "cassandra-gold", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "nyla-gold", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "thistle-gold", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "priam-gold", "width": 2.3978952727983707}, {"from": "darrow-lykos", "to": "kieran-lykos", "width": 2.302585092994046}, {"from": "darrow-lykos", "to": "barlow-lykos", "width": 2.1972245773362196}, {"from": "darrow-lykos", "to": "dio-lykos", "width": 1.9459101490553132}, {"from": "darrow-lykos", "to": "apollo-gold", "width": 1.9459101490553132}, {"from": "darrow-lykos", "to": "octavia-lune", "width": 1.791759469228055}, {"from": "darrow-lykos", "to": "pebble-gold", "width": 1.791759469228055}, {"from": "darrow-lykos", "to": "clown-gold", "width": 1.6094379124341003}, {"from": "darrow-lykos", "to": "tamara-gold", "width": 1.6094379124341003}, {"from": "darrow-lykos", "to": "iro-lykos", "width": 1.3862943611198906}, {"from": "darrow-lykos", "to": "ralph-red", "width": 1.3862943611198906}, {"from": "darrow-lykos", "to": "june-gold", "width": 1.3862943611198906}, {"from": "darrow-lykos", "to": "nexus-celintus", "width": 1.3862943611198906}, {"from": "darrow-lykos", "to": "dale-lykos", "width": 1.0986122886681098}, {"from": "darrow-lykos", "to": "liam-lykos", "width": 0.6931471805599453}, {"from": "darrow-lykos", "to": "varlo-red", "width": 0.6931471805599453}, {"from": "darrow-lykos", "to": "lorn-arcos", "width": 0.6931471805599453}, {"from": "darrow-lykos", "to": "tiberius-gold", "width": 0.6931471805599453}, {"from": "virginia-augustus", "to": "tactus-rath", "width": 2.6390573296152584}, {"from": "virginia-augustus", "to": "milia-trachus", "width": 2.3978952727983707}, {"from": "virginia-augustus", "to": "pax-telemanus", "width": 2.302585092994046}, {"from": "virginia-augustus", "to": "antonia-julii", "width": 2.1972245773362196}, {"from": "virginia-augustus", "to": "sevro-barca", "width": 2.0794415416798357}, {"from": "virginia-augustus", "to": "adrius-augustus", "width": 1.791759469228055}, {"from": "virginia-augustus", "to": "cassius-bellona", "width": 1.6094379124341003}, {"from": "virginia-augustus", "to": "nyla-gold", "width": 1.6094379124341003}, {"from": "virginia-augustus", "to": "roque-gold", "width": 1.6094379124341003}, {"from": "virginia-augustus", "to": "fitchner-barca", "width": 1.3862943611198906}, {"from": "virginia-augustus", "to": "nero-augustus", "width": 1.3862943611198906}, {"from": "virginia-augustus", "to": "titus-ladros", "width": 1.3862943611198906}, {"from": "cassius-bellona", "to": "roque-gold", "width": 3.4011973816621555}, {"from": "cassius-bellona", "to": "titus-ladros", "width": 2.8903717578961645}, {"from": "cassius-bellona", "to": "sevro-barca", "width": 2.6390573296152584}, {"from": "cassius-bellona", "to": "quinn-gold", "width": 2.5649493574615367}, {"from": "cassius-bellona", "to": "julian-bellona", "width": 2.1972245773362196}, {"from": "cassius-bellona", "to": "adrius-augustus", "width": 2.1972245773362196}, {"from": "cassius-bellona", "to": "priam-gold", "width": 2.0794415416798357}, {"from": "cassius-bellona", "to": "antonia-julii", "width": 1.9459101490553132}, {"from": "cassius-bellona", "to": "lea-gold", "width": 1.791759469228055}, {"from": "cassius-bellona", "to": "karnus-bellona", "width": 0.6931471805599453}, {"from": "mickey-carver", "to": "ugly-dan", "width": 2.302585092994046}, {"from": "mickey-carver", "to": "harmony-red", "width": 1.6094379124341003}, {"from": "matteo-pink", "to": "ugly-dan", "width": 1.6094379124341003}, {"from": "matteo-pink", "to": "dale-lykos", "width": 0.6931471805599453}, {"from": "ugly-dan", "to": "harmony-red", "width": 2.6390573296152584}, {"from": "ugly-dan", "to": "eo-lykos", "width": 1.791759469228055}, {"from": "barlow-lykos", "to": "eo-lykos", "width": 1.3862943611198906}, {"from": "eo-lykos", "to": "loran-lykos", "width": 2.0794415416798357}, {"from": "eo-lykos", "to": "kieran-lykos", "width": 1.791759469228055}, {"from": "eo-lykos", "to": "dio-lykos", "width": 1.3862943611198906}, {"from": "eo-lykos", "to": "nero-augustus", "width": 1.3862943611198906}, {"from": "eo-lykos", "to": "dain-lykos", "width": 0.6931471805599453}, {"from": "eo-lykos", "to": "liam-lykos", "width": 0.6931471805599453}, {"from": "eo-lykos", "to": "varlo-red", "width": 0.6931471805599453}, {"from": "harmony-red", "to": "ralph-red", "width": 1.3862943611198906}, {"from": "narol-lykos", "to": "loran-lykos", "width": 1.3862943611198906}, {"from": "dio-lykos", "to": "liam-lykos", "width": 0.6931471805599453}, {"from": "leanna-lykos", "to": "kieran-lykos", "width": 1.3862943611198906}, {"from": "iro-lykos", "to": "kieran-lykos", "width": 0.6931471805599453}, {"from": "iro-lykos", "to": "reagan-red", "width": 0.6931471805599453}, {"from": "iro-lykos", "to": "tactus-rath", "width": 0.6931471805599453}, {"from": "iro-lykos", "to": "titus-ladros", "width": 0.6931471805599453}, {"from": "kieran-lykos", "to": "loran-lykos", "width": 1.9459101490553132}, {"from": "kieran-lykos", "to": "reagan-red", "width": 0.6931471805599453}, {"from": "liam-lykos", "to": "loran-lykos", "width": 0.6931471805599453}, {"from": "antonia-julii", "to": "titus-ladros", "width": 1.9459101490553132}, {"from": "antonia-julii", "to": "sevro-barca", "width": 1.3862943611198906}, {"from": "antonia-julii", "to": "roque-gold", "width": 1.3862943611198906}, {"from": "antonia-julii", "to": "vixus-sarna", "width": 1.3862943611198906}, {"from": "antonia-julii", "to": "arria-gold", "width": 0.6931471805599453}, {"from": "cassandra-gold", "to": "vixus-sarna", "width": 2.4849066497880004}, {"from": "clown-gold", "to": "screwface-gold", "width": 1.791759469228055}, {"from": "clown-gold", "to": "thistle-gold", "width": 1.791759469228055}, {"from": "clown-gold", "to": "pebble-gold", "width": 1.791759469228055}, {"from": "clown-gold", "to": "weed-gold", "width": 1.791759469228055}, {"from": "fitchner-barca", "to": "adrius-augustus", "width": 1.3862943611198906}, {"from": "julian-bellona", "to": "titus-ladros", "width": 1.3862943611198906}, {"from": "lea-gold", "to": "roque-gold", "width": 2.9444389791664403}, {"from": "lea-gold", "to": "thistle-gold", "width": 2.1972245773362196}, {"from": "lea-gold", "to": "quinn-gold", "width": 1.9459101490553132}, {"from": "lea-gold", "to": "pax-telemanus", "width": 1.3862943611198906}, {"from": "lea-gold", "to": "weed-gold", "width": 1.3862943611198906}, {"from": "milia-trachus", "to": "pax-telemanus", "width": 2.4849066497880004}, {"from": "milia-trachus", "to": "nyla-gold", "width": 2.1972245773362196}, {"from": "milia-trachus", "to": "tactus-rath", "width": 2.1972245773362196}, {"from": "milia-trachus", "to": "sevro-barca", "width": 1.6094379124341003}, {"from": "nero-augustus", "to": "tiberius-gold", "width": 0.6931471805599453}, {"from": "nyla-gold", "to": "pax-telemanus", "width": 1.791759469228055}, {"from": "nyla-gold", "to": "sevro-barca", "width": 1.3862943611198906}, {"from": "nyla-gold", "to": "tactus-rath", "width": 1.3862943611198906}, {"from": "screwface-gold", "to": "thistle-gold", "width": 1.6094379124341003}, {"from": "screwface-gold", "to": "pebble-gold", "width": 1.6094379124341003}, {"from": "screwface-gold", "to": "weed-gold", "width": 1.6094379124341003}, {"from": "sevro-barca", "to": "tactus-rath", "width": 2.4849066497880004}, {"from": "sevro-barca", "to": "pax-telemanus", "width": 2.302585092994046}, {"from": "sevro-barca", "to": "roque-gold", "width": 2.1972245773362196}, {"from": "sevro-barca", "to": "quinn-gold", "width": 2.0794415416798357}, {"from": "sevro-barca", "to": "adrius-augustus", "width": 1.6094379124341003}, {"from": "tactus-rath", "to": "pax-telemanus", "width": 2.0794415416798357}, {"from": "adrius-augustus", "to": "pax-telemanus", "width": 2.1972245773362196}, {"from": "thistle-gold", "to": "pebble-gold", "width": 1.9459101490553132}, {"from": "thistle-gold", "to": "weed-gold", "width": 1.9459101490553132}, {"from": "titus-ladros", "to": "vixus-sarna", "width": 2.0794415416798357}, {"from": "titus-ladros", "to": "roque-gold", "width": 1.9459101490553132}, {"from": "titus-ladros", "to": "priam-gold", "width": 1.791759469228055}, {"from": "titus-ladros", "to": "quinn-gold", "width": 1.6094379124341003}, {"from": "pebble-gold", "to": "weed-gold", "width": 1.6094379124341003}, {"from": "quinn-gold", "to": "roque-gold", "width": 2.1972245773362196}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
