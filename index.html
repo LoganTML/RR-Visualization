@@ -14,10 +14,6 @@
     <!-- Your page content goes here -->
     <h1>RR Social Networks</h1>
 
-    <p>
-        The social network from each individual book is available below.
-    </p>
-
     <ol>
             
         <li><a href="rr_graph.html">Red Rising</a></li>
@@ -38,10 +34,10 @@
         Each social network was computed by counting the number of times each pair of characters appeared within 
         30 tokens (words) of each other in each book.  The node size for each character scales logarithmically with 
         the number of mentions of the character, as do the edge widths for each pair.  The colors of the nodes are based on 
-        the character's "Color" in the books.<br><br>
+        the character's "Color" in the books.  The networks were created and visualized using networkx and pyvis.<br><br>
 
         I highly recommend reading each book before viewing its social network or reading my general description below, as they 
-        obviously contain spoilers.<br><br>
+        contain spoilers for the entire series.<br><br>
 
         If you are interested, the source code for this project is available on my 
         <a href="https://github.com/LoganTML/RR-Visualization">GitHub</a>.  I used all_networks.ipynb to generate the social networks, 
@@ -75,8 +71,8 @@
 
             The last problem I encountered was that there was significant bleed between chapters- the last few sentences in one POV would 
             often create connections to the first after a POV switch.  After splitting the books at each POV switch and replacing 
-            the first-person language, I rejoined the paragraphs with the word " x " repeated 30 times.  This ensured that there were no 
-            connections across chapters.<br><br>
+            the first-person language, I rejoined the paragraphs with the word " x " repeated 30 times between them.  This ensured that 
+            there were no connections created across chapters.<br><br>
 
             After creating the graphs, I used networkx to compute several different centrality measures for each character across all 
             6 books- betweenness, eigenvector, degree, and closeness.  I then normalized each by dividing by the maximum value for each 
@@ -211,7 +207,8 @@
 
     </p><br>
 
-    <p>All rights to the Red Rising saga and its IP belong to <a href="https://www.piercebrown.com/">Pierce Brown</a>.</p>
+    <p>All rights to the Red Rising saga and its IP belong to <a href="https://www.piercebrown.com/">Pierce Brown</a>.<br>
+        My own website is available <a href="https://logantml.github.io">here</a>.</p>
   </div>
 </body>
 </html>
