@@ -1,0 +1,963 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="adrius-gold">adrius-gold</option>
+                                
+                                    <option value="virginia-gold">virginia-gold</option>
+                                
+                                    <option value="darrow-red">darrow-red</option>
+                                
+                                    <option value="aja-gold">aja-gold</option>
+                                
+                                    <option value="lysander-gold">lysander-gold</option>
+                                
+                                    <option value="magnus-gold">magnus-gold</option>
+                                
+                                    <option value="ajax-gold">ajax-gold</option>
+                                
+                                    <option value="atalantia-gold">atalantia-gold</option>
+                                
+                                    <option value="atlas-gold">atlas-gold</option>
+                                
+                                    <option value="scorpio-gold">scorpio-gold</option>
+                                
+                                    <option value="alexandar-gold">alexandar-gold</option>
+                                
+                                    <option value="thraxa-gold">thraxa-gold</option>
+                                
+                                    <option value="felix-gold">felix-gold</option>
+                                
+                                    <option value="alia-obsidian">alia-obsidian</option>
+                                
+                                    <option value="ragnar-obsidian">ragnar-obsidian</option>
+                                
+                                    <option value="sefi-obsidian">sefi-obsidian</option>
+                                
+                                    <option value="amel-pink">amel-pink</option>
+                                
+                                    <option value="ephraim-gray">ephraim-gray</option>
+                                
+                                    <option value="gudkind-obsidian">gudkind-obsidian</option>
+                                
+                                    <option value="apollonius-gold">apollonius-gold</option>
+                                
+                                    <option value="asmodeus-gold">asmodeus-gold</option>
+                                
+                                    <option value="cassius-gold">cassius-gold</option>
+                                
+                                    <option value="cicero-gold">cicero-gold</option>
+                                
+                                    <option value="gorgo-obsidian">gorgo-obsidian</option>
+                                
+                                    <option value="braga-obsidian">braga-obsidian</option>
+                                
+                                    <option value="ozgard-obsidian">ozgard-obsidian</option>
+                                
+                                    <option value="brea-red">brea-red</option>
+                                
+                                    <option value="lyria-red">lyria-red</option>
+                                
+                                    <option value="britannia-silver">britannia-silver</option>
+                                
+                                    <option value="cadus-orange">cadus-orange</option>
+                                
+                                    <option value="colloway-blue">colloway-blue</option>
+                                
+                                    <option value="glirastes-orange">glirastes-orange</option>
+                                
+                                    <option value="lea-gold">lea-gold</option>
+                                
+                                    <option value="clown-gold">clown-gold</option>
+                                
+                                    <option value="sevro-gold">sevro-gold</option>
+                                
+                                    <option value="cormac-red">cormac-red</option>
+                                
+                                    <option value="crastus-gold">crastus-gold</option>
+                                
+                                    <option value="drusilla-gold">drusilla-gold</option>
+                                
+                                    <option value="dago-red">dago-red</option>
+                                
+                                    <option value="dancer-red">dancer-red</option>
+                                
+                                    <option value="pax_augustus-gold">pax_augustus-gold</option>
+                                
+                                    <option value="deanna-red">deanna-red</option>
+                                
+                                    <option value="rhonna-red">rhonna-red</option>
+                                
+                                    <option value="orion-blue">orion-blue</option>
+                                
+                                    <option value="publius-copper">publius-copper</option>
+                                
+                                    <option value="victra-gold">victra-gold</option>
+                                
+                                    <option value="daxo-gold">daxo-gold</option>
+                                
+                                    <option value="mickey-violet">mickey-violet</option>
+                                
+                                    <option value="eo-red">eo-red</option>
+                                
+                                    <option value="marbles-green">marbles-green</option>
+                                
+                                    <option value="holiday-gray">holiday-gray</option>
+                                
+                                    <option value="dido-gold">dido-gold</option>
+                                
+                                    <option value="romulus-gold">romulus-gold</option>
+                                
+                                    <option value="helios-gold">helios-gold</option>
+                                
+                                    <option value="diomedes-gold">diomedes-gold</option>
+                                
+                                    <option value="duke_of_hands-pink">duke_of_hands-pink</option>
+                                
+                                    <option value="harmony-red">harmony-red</option>
+                                
+                                    <option value="trigg-gray">trigg-gray</option>
+                                
+                                    <option value="duncan-red">duncan-red</option>
+                                
+                                    <option value="electra-gold">electra-gold</option>
+                                
+                                    <option value="julia-gold">julia-gold</option>
+                                
+                                    <option value="xenophon-white">xenophon-white</option>
+                                
+                                    <option value="volga-obsidian">volga-obsidian</option>
+                                
+                                    <option value="valdir-obsidian">valdir-obsidian</option>
+                                
+                                    <option value="volsung_fa-obsidian">volsung_fa-obsidian</option>
+                                
+                                    <option value="freihild-obsidian">freihild-obsidian</option>
+                                
+                                    <option value="exeter-brown">exeter-brown</option>
+                                
+                                    <option value="silenius-gold">silenius-gold</option>
+                                
+                                    <option value="kalindora-gold">kalindora-gold</option>
+                                
+                                    <option value="fitchner-gold">fitchner-gold</option>
+                                
+                                    <option value="zan-blue">zan-blue</option>
+                                
+                                    <option value="ignacius-gold">ignacius-gold</option>
+                                
+                                    <option value="rhone-gray">rhone-gray</option>
+                                
+                                    <option value="seraphina-gold">seraphina-gold</option>
+                                
+                                    <option value="karnus-gold">karnus-gold</option>
+                                
+                                    <option value="kavax-gold">kavax-gold</option>
+                                
+                                    <option value="niobe-gold">niobe-gold</option>
+                                
+                                    <option value="kieran-red">kieran-red</option>
+                                
+                                    <option value="liam-red">liam-red</option>
+                                
+                                    <option value="lilath-gold">lilath-gold</option>
+                                
+                                    <option value="lorn-gold">lorn-gold</option>
+                                
+                                    <option value="ulysses-gold">ulysses-gold</option>
+                                
+                                    <option value="vanna-red">vanna-red</option>
+                                
+                                    <option value="tails-red">tails-red</option>
+                                
+                                    <option value="maeve-red">maeve-red</option>
+                                
+                                    <option value="pandora-gold">pandora-gold</option>
+                                
+                                    <option value="paxton-gray">paxton-gray</option>
+                                
+                                    <option value="mora-red">mora-red</option>
+                                
+                                    <option value="torrow-red">torrow-red</option>
+                                
+                                    <option value="octavia-gold">octavia-gold</option>
+                                
+                                    <option value="pytha-blue">pytha-blue</option>
+                                
+                                    <option value="seneca-gold">seneca-gold</option>
+                                
+                                    <option value="nero-gold">nero-gold</option>
+                                
+                                    <option value="regulus-silver">regulus-silver</option>
+                                
+                                    <option value="rollo-red">rollo-red</option>
+                                
+                                    <option value="theodora-pink">theodora-pink</option>
+                                
+                                    <option value="tongueless-obsidian">tongueless-obsidian</option>
+                                
+                                    <option value="aeneas-gold">aeneas-gold</option>
+                                
+                                    <option value="aevius-gold">aevius-gold</option>
+                                
+                                    <option value="agala-gold">agala-gold</option>
+                                
+                                    <option value="agrippina-gold">agrippina-gold</option>
+                                
+                                    <option value="akari-gold">akari-gold</option>
+                                
+                                    <option value="alred-red">alred-red</option>
+                                
+                                    <option value="anastasia-gold">anastasia-gold</option>
+                                
+                                    <option value="anicetus-gold">anicetus-gold</option>
+                                
+                                    <option value="anthousa-copper">anthousa-copper</option>
+                                
+                                    <option value="antonia-gold">antonia-gold</option>
+                                
+                                    <option value="titus-red">titus-red</option>
+                                
+                                    <option value="arminius-gold">arminius-gold</option>
+                                
+                                    <option value="arria-gold">arria-gold</option>
+                                
+                                    <option value="arturius-gold">arturius-gold</option>
+                                
+                                    <option value="athena-red">athena-red</option>
+                                
+                                    <option value="aurae-pink">aurae-pink</option>
+                                
+                                    <option value="barlow-red">barlow-red</option>
+                                
+                                    <option value="bellagra-gold">bellagra-gold</option>
+                                
+                                    <option value="bellerophon-gold">bellerophon-gold</option>
+                                
+                                    <option value="bondilus-copper">bondilus-copper</option>
+                                
+                                    <option value="bridge-gray">bridge-gray</option>
+                                
+                                    <option value="brutus-gold">brutus-gold</option>
+                                
+                                    <option value="bryn-red">bryn-red</option>
+                                
+                                    <option value="cagney-gold">cagney-gold</option>
+                                
+                                    <option value="calliope-pink">calliope-pink</option>
+                                
+                                    <option value="calypso-gold">calypso-gold</option>
+                                
+                                    <option value="cassandra-gold">cassandra-gold</option>
+                                
+                                    <option value="cedric-copper">cedric-copper</option>
+                                
+                                    <option value="cipio-gold">cipio-gold</option>
+                                
+                                    <option value="claudius-gold">claudius-gold</option>
+                                
+                                    <option value="clintus-gold">clintus-gold</option>
+                                
+                                    <option value="corthus-red">corthus-red</option>
+                                
+                                    <option value="croissy-yellow">croissy-yellow</option>
+                                
+                                    <option value="cylax-green">cylax-green</option>
+                                
+                                    <option value="cylus-gold">cylus-gold</option>
+                                
+                                    <option value="cyra-green">cyra-green</option>
+                                
+                                    <option value="cyther-orange">cyther-orange</option>
+                                
+                                    <option value="dale-red">dale-red</option>
+                                
+                                    <option value="dano-red">dano-red</option>
+                                
+                                    <option value="danto-gray">danto-gray</option>
+                                
+                                    <option value="daria-gold">daria-gold</option>
+                                
+                                    <option value="dax-gold">dax-gold</option>
+                                
+                                    <option value="demetrius-gray">demetrius-gray</option>
+                                
+                                    <option value="diana_selene-gold">diana_selene-gold</option>
+                                
+                                    <option value="dio-red">dio-red</option>
+                                
+                                    <option value="doran-red">doran-red</option>
+                                
+                                    <option value="drusus-gold">drusus-gold</option>
+                                
+                                    <option value="evey-pink">evey-pink</option>
+                                
+                                    <option value="fabera-gold">fabera-gold</option>
+                                
+                                    <option value="fachnan-red">fachnan-red</option>
+                                
+                                    <option value="fenix-gray">fenix-gray</option>
+                                
+                                    <option value="fel-red">fel-red</option>
+                                
+                                    <option value="gaianna-gold">gaianna-gold</option>
+                                
+                                    <option value="gaia-gold">gaia-gold</option>
+                                
+                                    <option value="glaucus-red">glaucus-red</option>
+                                
+                                    <option value="goroth-obsidian">goroth-obsidian</option>
+                                
+                                    <option value="gregarius-gold">gregarius-gold</option>
+                                
+                                    <option value="hadrian-gold">hadrian-gold</option>
+                                
+                                    <option value="hecuba-gold">hecuba-gold</option>
+                                
+                                    <option value="hjornir-obsidian">hjornir-obsidian</option>
+                                
+                                    <option value="horatia-gold">horatia-gold</option>
+                                
+                                    <option value="horatius-gold">horatius-gold</option>
+                                
+                                    <option value="iona-gold">iona-gold</option>
+                                
+                                    <option value="irenia-gold">irenia-gold</option>
+                                
+                                    <option value="iro-red">iro-red</option>
+                                
+                                    <option value="janus-gold">janus-gold</option>
+                                
+                                    <option value="john_merrywater-unknown">john_merrywater-unknown</option>
+                                
+                                    <option value="julian-gold">julian-gold</option>
+                                
+                                    <option value="julius-gold">julius-gold</option>
+                                
+                                    <option value="june-gold">june-gold</option>
+                                
+                                    <option value="kal-silver">kal-silver</option>
+                                
+                                    <option value="kobachi-green">kobachi-green</option>
+                                
+                                    <option value="lana-red">lana-red</option>
+                                
+                                    <option value="leanna-red">leanna-red</option>
+                                
+                                    <option value="leto-gold">leto-gold</option>
+                                
+                                    <option value="liago-yellow">liago-yellow</option>
+                                
+                                    <option value="licenus-copper">licenus-copper</option>
+                                
+                                    <option value="loran-red">loran-red</option>
+                                
+                                    <option value="lottie-brown">lottie-brown</option>
+                                
+                                    <option value="lucius-gold">lucius-gold</option>
+                                
+                                    <option value="marcel-gray">marcel-gray</option>
+                                
+                                    <option value="marcus-gold">marcus-gold</option>
+                                
+                                    <option value="marius-gold">marius-gold</option>
+                                
+                                    <option value="markus-gray">markus-gray</option>
+                                
+                                    <option value="matteo-pink">matteo-pink</option>
+                                
+                                    <option value="milia-gold">milia-gold</option>
+                                
+                                    <option value="min_min-gold">min_min-gold</option>
+                                
+                                    <option value="modjob-brown">modjob-brown</option>
+                                
+                                    <option value="moira-gold">moira-gold</option>
+                                
+                                    <option value="murani-unknown">murani-unknown</option>
+                                
+                                    <option value="narol-red">narol-red</option>
+                                
+                                    <option value="nexus-gold">nexus-gold</option>
+                                
+                                    <option value="nicator-copper">nicator-copper</option>
+                                
+                                    <option value="novas-gold">novas-gold</option>
+                                
+                                    <option value="nyla-gold">nyla-gold</option>
+                                
+                                    <option value="ophelia-gold">ophelia-gold</option>
+                                
+                                    <option value="oro-blue">oro-blue</option>
+                                
+                                    <option value="oslo-white">oslo-white</option>
+                                
+                                    <option value="oxis-orange">oxis-orange</option>
+                                
+                                    <option value="paleron-gold">paleron-gold</option>
+                                
+                                    <option value="pebble-gold">pebble-gold</option>
+                                
+                                    <option value="picker-red">picker-red</option>
+                                
+                                    <option value="pliny-gold">pliny-gold</option>
+                                
+                                    <option value="pollux-gold">pollux-gold</option>
+                                
+                                    <option value="priam-gold">priam-gold</option>
+                                
+                                    <option value="apollo-gold">apollo-gold</option>
+                                
+                                    <option value="bacchus-gold">bacchus-gold</option>
+                                
+                                    <option value="ceres-gold">ceres-gold</option>
+                                
+                                    <option value="diana-gold">diana-gold</option>
+                                
+                                    <option value="juno-gold">juno-gold</option>
+                                
+                                    <option value="jupiter-gold">jupiter-gold</option>
+                                
+                                    <option value="mercury-gold">mercury-gold</option>
+                                
+                                    <option value="prospera-gold">prospera-gold</option>
+                                
+                                    <option value="quinn-gold">quinn-gold</option>
+                                
+                                    <option value="ralph-red">ralph-red</option>
+                                
+                                    <option value="reagan-red">reagan-red</option>
+                                
+                                    <option value="revus-gold">revus-gold</option>
+                                
+                                    <option value="roque-gold">roque-gold</option>
+                                
+                                    <option value="roran-red">roran-red</option>
+                                
+                                    <option value="rotback-gold">rotback-gold</option>
+                                
+                                    <option value="ryanna-red">ryanna-red</option>
+                                
+                                    <option value="scipio-gold">scipio-gold</option>
+                                
+                                    <option value="servilla-gold">servilla-gold</option>
+                                
+                                    <option value="skarde-obsidian">skarde-obsidian</option>
+                                
+                                    <option value="sleepy-red">sleepy-red</option>
+                                
+                                    <option value="stefano-gray">stefano-gray</option>
+                                
+                                    <option value="tactus-gold">tactus-gold</option>
+                                
+                                    <option value="tamara-gold">tamara-gold</option>
+                                
+                                    <option value="tania-gold">tania-gold</option>
+                                
+                                    <option value="thalia-gold">thalia-gold</option>
+                                
+                                    <option value="tharsus-gold">tharsus-gold</option>
+                                
+                                    <option value="fig-copper">fig-copper</option>
+                                
+                                    <option value="theron-gold">theron-gold</option>
+                                
+                                    <option value="thesalia-gold">thesalia-gold</option>
+                                
+                                    <option value="thistle-gold">thistle-gold</option>
+                                
+                                    <option value="tiberius-gold">tiberius-gold</option>
+                                
+                                    <option value="timony-copper">timony-copper</option>
+                                
+                                    <option value="tiran-red">tiran-red</option>
+                                
+                                    <option value="dan-gray">dan-gray</option>
+                                
+                                    <option value="valeria-gold">valeria-gold</option>
+                                
+                                    <option value="varlo-red">varlo-red</option>
+                                
+                                    <option value="varus-gold">varus-gold</option>
+                                
+                                    <option value="vela-gold">vela-gold</option>
+                                
+                                    <option value="venetia-gold">venetia-gold</option>
+                                
+                                    <option value="videlia-copper">videlia-copper</option>
+                                
+                                    <option value="vixus-gold">vixus-gold</option>
+                                
+                                    <option value="weed-gold">weed-gold</option>
+                                
+                                    <option value="winkle-green">winkle-green</option>
+                                
+                                    <option value="wulfgar-obsidian">wulfgar-obsidian</option>
+                                
+                                    <option value="xana-gold">xana-gold</option>
+                                
+                                    <option value="zanzibar-violet">zanzibar-violet</option>
+                                
+                                    <option value="zarubal-violet">zarubal-violet</option>
+                                
+                                    <option value="pax_telemanus-gold">pax_telemanus-gold</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "gold", "id": "adrius-gold", "label": "adrius-gold", "shape": "dot", "size": 5}, {"color": "gold", "id": "virginia-gold", "label": "virginia-gold", "shape": "dot", "size": 15}, {"color": "red", "id": "darrow-red", "label": "darrow-red", "shape": "dot", "size": 15}, {"color": "gold", "id": "aja-gold", "label": "aja-gold", "shape": "dot", "size": 7}, {"color": "gold", "id": "lysander-gold", "label": "lysander-gold", "shape": "dot", "size": 16}, {"color": "gold", "id": "magnus-gold", "label": "magnus-gold", "shape": "dot", "size": 3}, {"color": "gold", "id": "ajax-gold", "label": "ajax-gold", "shape": "dot", "size": 9}, {"color": "gold", "id": "atalantia-gold", "label": "atalantia-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "atlas-gold", "label": "atlas-gold", "shape": "dot", "size": 8}, {"color": "gold", "id": "scorpio-gold", "label": "scorpio-gold", "shape": "dot", "size": 3}, {"color": "gold", "id": "alexandar-gold", "label": "alexandar-gold", "shape": "dot", "size": 9}, {"color": "gold", "id": "thraxa-gold", "label": "thraxa-gold", "shape": "dot", "size": 9}, {"color": "gold", "id": "felix-gold", "label": "felix-gold", "shape": "dot", "size": 3}, {"color": "black", "id": "alia-obsidian", "label": "alia-obsidian", "shape": "dot", "size": 2}, {"color": "black", "id": "ragnar-obsidian", "label": "ragnar-obsidian", "shape": "dot", "size": 5}, {"color": "black", "id": "sefi-obsidian", "label": "sefi-obsidian", "shape": "dot", "size": 10}, {"color": "pink", "id": "amel-pink", "label": "amel-pink", "shape": "dot", "size": 3}, {"color": "gray", "id": "ephraim-gray", "label": "ephraim-gray", "shape": "dot", "size": 15}, {"color": "black", "id": "gudkind-obsidian", "label": "gudkind-obsidian", "shape": "dot", "size": 5}, {"color": "gold", "id": "apollonius-gold", "label": "apollonius-gold", "shape": "dot", "size": 6}, {"color": "gold", "id": "asmodeus-gold", "label": "asmodeus-gold", "shape": "dot", "size": 3}, {"color": "gold", "id": "cassius-gold", "label": "cassius-gold", "shape": "dot", "size": 6}, {"color": "gold", "id": "cicero-gold", "label": "cicero-gold", "shape": "dot", "size": 7}, {"color": "black", "id": "gorgo-obsidian", "label": "gorgo-obsidian", "shape": "dot", "size": 2}, {"color": "black", "id": "braga-obsidian", "label": "braga-obsidian", "shape": "dot", "size": 4}, {"color": "black", "id": "ozgard-obsidian", "label": "ozgard-obsidian", "shape": "dot", "size": 8}, {"color": "red", "id": "brea-red", "label": "brea-red", "shape": "dot", "size": 3}, {"color": "red", "id": "lyria-red", "label": "lyria-red", "shape": "dot", "size": 15}, {"color": "silver", "id": "britannia-silver", "label": "britannia-silver", "shape": "dot", "size": 2}, {"color": "orange", "id": "cadus-orange", "label": "cadus-orange", "shape": "dot", "size": 8}, {"color": "blue", "id": "colloway-blue", "label": "colloway-blue", "shape": "dot", "size": 7}, {"color": "orange", "id": "glirastes-orange", "label": "glirastes-orange", "shape": "dot", "size": 8}, {"color": "gold", "id": "lea-gold", "label": "lea-gold", "shape": "dot", "size": 2}, {"color": "gold", "id": "clown-gold", "label": "clown-gold", "shape": "dot", "size": 3}, {"color": "gold", "id": "sevro-gold", "label": "sevro-gold", "shape": "dot", "size": 9}, {"color": "red", "id": "cormac-red", "label": "cormac-red", "shape": "dot", "size": 5}, {"color": "gold", "id": "crastus-gold", "label": "crastus-gold", "shape": "dot", "size": 2}, {"color": "gold", "id": "drusilla-gold", "label": "drusilla-gold", "shape": "dot", "size": 6}, {"color": "red", "id": "dago-red", "label": "dago-red", "shape": "dot", "size": 2}, {"color": "red", "id": "dancer-red", "label": "dancer-red", "shape": "dot", "size": 7}, {"color": "gold", "id": "pax_augustus-gold", "label": "pax_augustus-gold", "shape": "dot", "size": 10}, {"color": "red", "id": "deanna-red", "label": "deanna-red", "shape": "dot", "size": 4}, {"color": "red", "id": "rhonna-red", "label": "rhonna-red", "shape": "dot", "size": 8}, {"color": "blue", "id": "orion-blue", "label": "orion-blue", "shape": "dot", "size": 7}, {"color": "dark orange", "id": "publius-copper", "label": "publius-copper", "shape": "dot", "size": 7}, {"color": "gold", "id": "victra-gold", "label": "victra-gold", "shape": "dot", "size": 10}, {"color": "gold", "id": "daxo-gold", "label": "daxo-gold", "shape": "dot", "size": 8}, {"color": "violet", "id": "mickey-violet", "label": "mickey-violet", "shape": "dot", "size": 4}, {"color": "red", "id": "eo-red", "label": "eo-red", "shape": "dot", "size": 3}, {"color": "green", "id": "marbles-green", "label": "marbles-green", "shape": "dot", "size": 2}, {"color": "gray", "id": "holiday-gray", "label": "holiday-gray", "shape": "dot", "size": 7}, {"color": "gold", "id": "dido-gold", "label": "dido-gold", "shape": "dot", "size": 4}, {"color": "gold", "id": "romulus-gold", "label": "romulus-gold", "shape": "dot", "size": 5}, {"color": "gold", "id": "helios-gold", "label": "helios-gold", "shape": "dot", "size": 4}, {"color": "gold", "id": "diomedes-gold", "label": "diomedes-gold", "shape": "dot", "size": 7}, {"color": "pink", "id": "duke_of_hands-pink", "label": "duke_of_hands-pink", "shape": "dot", "size": 4}, {"color": "red", "id": "harmony-red", "label": "harmony-red", "shape": "dot", "size": 7}, {"color": "gray", "id": "trigg-gray", "label": "trigg-gray", "shape": "dot", "size": 4}, {"color": "red", "id": "duncan-red", "label": "duncan-red", "shape": "dot", "size": 6}, {"color": "gold", "id": "electra-gold", "label": "electra-gold", "shape": "dot", "size": 8}, {"color": "gold", "id": "julia-gold", "label": "julia-gold", "shape": "dot", "size": 3}, {"color": "white", "id": "xenophon-white", "label": "xenophon-white", "shape": "dot", "size": 8}, {"color": "black", "id": "volga-obsidian", "label": "volga-obsidian", "shape": "dot", "size": 10}, {"color": "black", "id": "valdir-obsidian", "label": "valdir-obsidian", "shape": "dot", "size": 8}, {"color": "black", "id": "volsung_fa-obsidian", "label": "volsung_fa-obsidian", "shape": "dot", "size": 8}, {"color": "black", "id": "freihild-obsidian", "label": "freihild-obsidian", "shape": "dot", "size": 7}, {"color": "brown", "id": "exeter-brown", "label": "exeter-brown", "shape": "dot", "size": 4}, {"color": "gold", "id": "silenius-gold", "label": "silenius-gold", "shape": "dot", "size": 5}, {"color": "gold", "id": "kalindora-gold", "label": "kalindora-gold", "shape": "dot", "size": 9}, {"color": "gold", "id": "fitchner-gold", "label": "fitchner-gold", "shape": "dot", "size": 5}, {"color": "blue", "id": "zan-blue", "label": "zan-blue", "shape": "dot", "size": 3}, {"color": "gold", "id": "ignacius-gold", "label": "ignacius-gold", "shape": "dot", "size": 5}, {"color": "gray", "id": "rhone-gray", "label": "rhone-gray", "shape": "dot", "size": 7}, {"color": "gold", "id": "seraphina-gold", "label": "seraphina-gold", "shape": "dot", "size": 7}, {"color": "gold", "id": "karnus-gold", "label": "karnus-gold", "shape": "dot", "size": 2}, {"color": "gold", "id": "kavax-gold", "label": "kavax-gold", "shape": "dot", "size": 7}, {"color": "gold", "id": "niobe-gold", "label": "niobe-gold", "shape": "dot", "size": 5}, {"color": "red", "id": "kieran-red", "label": "kieran-red", "shape": "dot", "size": 3}, {"color": "red", "id": "liam-red", "label": "liam-red", "shape": "dot", "size": 4}, {"color": "gold", "id": "lilath-gold", "label": "lilath-gold", "shape": "dot", "size": 7}, {"color": "gold", "id": "lorn-gold", "label": "lorn-gold", "shape": "dot", "size": 4}, {"color": "gold", "id": "ulysses-gold", "label": "ulysses-gold", "shape": "dot", "size": 4}, {"color": "red", "id": "vanna-red", "label": "vanna-red", "shape": "dot", "size": 2}, {"color": "red", "id": "tails-red", "label": "tails-red", "shape": "dot", "size": 3}, {"color": "red", "id": "maeve-red", "label": "maeve-red", "shape": "dot", "size": 2}, {"color": "gold", "id": "pandora-gold", "label": "pandora-gold", "shape": "dot", "size": 3}, {"color": "gray", "id": "paxton-gray", "label": "paxton-gray", "shape": "dot", "size": 3}, {"color": "red", "id": "mora-red", "label": "mora-red", "shape": "dot", "size": 2}, {"color": "red", "id": "torrow-red", "label": "torrow-red", "shape": "dot", "size": 2}, {"color": "gold", "id": "octavia-gold", "label": "octavia-gold", "shape": "dot", "size": 7}, {"color": "blue", "id": "pytha-blue", "label": "pytha-blue", "shape": "dot", "size": 4}, {"color": "gold", "id": "seneca-gold", "label": "seneca-gold", "shape": "dot", "size": 5}, {"color": "gold", "id": "nero-gold", "label": "nero-gold", "shape": "dot", "size": 2}, {"color": "silver", "id": "regulus-silver", "label": "regulus-silver", "shape": "dot", "size": 5}, {"color": "red", "id": "rollo-red", "label": "rollo-red", "shape": "dot", "size": 2}, {"color": "pink", "id": "theodora-pink", "label": "theodora-pink", "shape": "dot", "size": 5}, {"color": "black", "id": "tongueless-obsidian", "label": "tongueless-obsidian", "shape": "dot", "size": 4}, {"color": "gold", "id": "aeneas-gold", "label": "aeneas-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "aevius-gold", "label": "aevius-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "agala-gold", "label": "agala-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "agrippina-gold", "label": "agrippina-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "akari-gold", "label": "akari-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "red", "id": "alred-red", "label": "alred-red", "shape": "dot", "size": 2.1972245773362196}, {"color": "gold", "id": "anastasia-gold", "label": "anastasia-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "anicetus-gold", "label": "anicetus-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "anthousa-copper", "label": "anthousa-copper", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "antonia-gold", "label": "antonia-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "titus-red", "label": "titus-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "arminius-gold", "label": "arminius-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "arria-gold", "label": "arria-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "arturius-gold", "label": "arturius-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "athena-red", "label": "athena-red", "shape": "dot", "size": 0.0}, {"color": "pink", "id": "aurae-pink", "label": "aurae-pink", "shape": "dot", "size": 0.0}, {"color": "red", "id": "barlow-red", "label": "barlow-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "bellagra-gold", "label": "bellagra-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "bellerophon-gold", "label": "bellerophon-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "bondilus-copper", "label": "bondilus-copper", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "bridge-gray", "label": "bridge-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "brutus-gold", "label": "brutus-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "bryn-red", "label": "bryn-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "cagney-gold", "label": "cagney-gold", "shape": "dot", "size": 0.0}, {"color": "pink", "id": "calliope-pink", "label": "calliope-pink", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "calypso-gold", "label": "calypso-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "cassandra-gold", "label": "cassandra-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "dark orange", "id": "cedric-copper", "label": "cedric-copper", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "cipio-gold", "label": "cipio-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "claudius-gold", "label": "claudius-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "clintus-gold", "label": "clintus-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "corthus-red", "label": "corthus-red", "shape": "dot", "size": 0.0}, {"color": "yellow", "id": "croissy-yellow", "label": "croissy-yellow", "shape": "dot", "size": 0.0}, {"color": "green", "id": "cylax-green", "label": "cylax-green", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "cylus-gold", "label": "cylus-gold", "shape": "dot", "size": 0.0}, {"color": "green", "id": "cyra-green", "label": "cyra-green", "shape": "dot", "size": 0.0}, {"color": "orange", "id": "cyther-orange", "label": "cyther-orange", "shape": "dot", "size": 1.3862943611198906}, {"color": "red", "id": "dale-red", "label": "dale-red", "shape": "dot", "size": 1.3862943611198906}, {"color": "red", "id": "dano-red", "label": "dano-red", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "danto-gray", "label": "danto-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "daria-gold", "label": "daria-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "dax-gold", "label": "dax-gold", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "demetrius-gray", "label": "demetrius-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "diana_selene-gold", "label": "diana_selene-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "dio-red", "label": "dio-red", "shape": "dot", "size": 0.0}, {"color": "red", "id": "doran-red", "label": "doran-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "drusus-gold", "label": "drusus-gold", "shape": "dot", "size": 0.0}, {"color": "pink", "id": "evey-pink", "label": "evey-pink", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "fabera-gold", "label": "fabera-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "fachnan-red", "label": "fachnan-red", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "fenix-gray", "label": "fenix-gray", "shape": "dot", "size": 0.0}, {"color": "red", "id": "fel-red", "label": "fel-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "gaianna-gold", "label": "gaianna-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "gaia-gold", "label": "gaia-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "glaucus-red", "label": "glaucus-red", "shape": "dot", "size": 0.0}, {"color": "black", "id": "goroth-obsidian", "label": "goroth-obsidian", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "gregarius-gold", "label": "gregarius-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "hadrian-gold", "label": "hadrian-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "hecuba-gold", "label": "hecuba-gold", "shape": "dot", "size": 0.0}, {"color": "black", "id": "hjornir-obsidian", "label": "hjornir-obsidian", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "horatia-gold", "label": "horatia-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "horatius-gold", "label": "horatius-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "iona-gold", "label": "iona-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "irenia-gold", "label": "irenia-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "iro-red", "label": "iro-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "janus-gold", "label": "janus-gold", "shape": "dot", "size": 0.0}, {"color": "unknown", "id": "john_merrywater-unknown", "label": "john_merrywater-unknown", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "julian-gold", "label": "julian-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "julius-gold", "label": "julius-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "june-gold", "label": "june-gold", "shape": "dot", "size": 0.0}, {"color": "silver", "id": "kal-silver", "label": "kal-silver", "shape": "dot", "size": 0.0}, {"color": "green", "id": "kobachi-green", "label": "kobachi-green", "shape": "dot", "size": 0.0}, {"color": "red", "id": "lana-red", "label": "lana-red", "shape": "dot", "size": 0.0}, {"color": "red", "id": "leanna-red", "label": "leanna-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "leto-gold", "label": "leto-gold", "shape": "dot", "size": 0.0}, {"color": "yellow", "id": "liago-yellow", "label": "liago-yellow", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "licenus-copper", "label": "licenus-copper", "shape": "dot", "size": 0.0}, {"color": "red", "id": "loran-red", "label": "loran-red", "shape": "dot", "size": 0.0}, {"color": "brown", "id": "lottie-brown", "label": "lottie-brown", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "lucius-gold", "label": "lucius-gold", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "marcel-gray", "label": "marcel-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "marcus-gold", "label": "marcus-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "marius-gold", "label": "marius-gold", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "markus-gray", "label": "markus-gray", "shape": "dot", "size": 0.0}, {"color": "pink", "id": "matteo-pink", "label": "matteo-pink", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "milia-gold", "label": "milia-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "min_min-gold", "label": "min_min-gold", "shape": "dot", "size": 2.1972245773362196}, {"color": "brown", "id": "modjob-brown", "label": "modjob-brown", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "moira-gold", "label": "moira-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "unknown", "id": "murani-unknown", "label": "murani-unknown", "shape": "dot", "size": 0.0}, {"color": "red", "id": "narol-red", "label": "narol-red", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "nexus-gold", "label": "nexus-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "nicator-copper", "label": "nicator-copper", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "novas-gold", "label": "novas-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "nyla-gold", "label": "nyla-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "ophelia-gold", "label": "ophelia-gold", "shape": "dot", "size": 0.0}, {"color": "blue", "id": "oro-blue", "label": "oro-blue", "shape": "dot", "size": 0.0}, {"color": "white", "id": "oslo-white", "label": "oslo-white", "shape": "dot", "size": 0.0}, {"color": "orange", "id": "oxis-orange", "label": "oxis-orange", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "paleron-gold", "label": "paleron-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "pebble-gold", "label": "pebble-gold", "shape": "dot", "size": 4.605170185988092}, {"color": "red", "id": "picker-red", "label": "picker-red", "shape": "dot", "size": 5.278114659230517}, {"color": "gold", "id": "pliny-gold", "label": "pliny-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "pollux-gold", "label": "pollux-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "priam-gold", "label": "priam-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "apollo-gold", "label": "apollo-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "bacchus-gold", "label": "bacchus-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "ceres-gold", "label": "ceres-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "diana-gold", "label": "diana-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "juno-gold", "label": "juno-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "jupiter-gold", "label": "jupiter-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "mercury-gold", "label": "mercury-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "prospera-gold", "label": "prospera-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "quinn-gold", "label": "quinn-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "ralph-red", "label": "ralph-red", "shape": "dot", "size": 0.0}, {"color": "red", "id": "reagan-red", "label": "reagan-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "revus-gold", "label": "revus-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "roque-gold", "label": "roque-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "red", "id": "roran-red", "label": "roran-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "rotback-gold", "label": "rotback-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "ryanna-red", "label": "ryanna-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "scipio-gold", "label": "scipio-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "servilla-gold", "label": "servilla-gold", "shape": "dot", "size": 2.1972245773362196}, {"color": "black", "id": "skarde-obsidian", "label": "skarde-obsidian", "shape": "dot", "size": 0.0}, {"color": "red", "id": "sleepy-red", "label": "sleepy-red", "shape": "dot", "size": 0.0}, {"color": "gray", "id": "stefano-gray", "label": "stefano-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "tactus-gold", "label": "tactus-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "tamara-gold", "label": "tamara-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "tania-gold", "label": "tania-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "thalia-gold", "label": "thalia-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "tharsus-gold", "label": "tharsus-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "fig-copper", "label": "fig-copper", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "theron-gold", "label": "theron-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "thesalia-gold", "label": "thesalia-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "thistle-gold", "label": "thistle-gold", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "tiberius-gold", "label": "tiberius-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "timony-copper", "label": "timony-copper", "shape": "dot", "size": 0.0}, {"color": "red", "id": "tiran-red", "label": "tiran-red", "shape": "dot", "size": 1.3862943611198906}, {"color": "gray", "id": "dan-gray", "label": "dan-gray", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "valeria-gold", "label": "valeria-gold", "shape": "dot", "size": 0.0}, {"color": "red", "id": "varlo-red", "label": "varlo-red", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "varus-gold", "label": "varus-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "vela-gold", "label": "vela-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "venetia-gold", "label": "venetia-gold", "shape": "dot", "size": 0.0}, {"color": "dark orange", "id": "videlia-copper", "label": "videlia-copper", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "vixus-gold", "label": "vixus-gold", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "weed-gold", "label": "weed-gold", "shape": "dot", "size": 0.0}, {"color": "green", "id": "winkle-green", "label": "winkle-green", "shape": "dot", "size": 0.0}, {"color": "black", "id": "wulfgar-obsidian", "label": "wulfgar-obsidian", "shape": "dot", "size": 1.3862943611198906}, {"color": "gold", "id": "xana-gold", "label": "xana-gold", "shape": "dot", "size": 0.0}, {"color": "violet", "id": "zanzibar-violet", "label": "zanzibar-violet", "shape": "dot", "size": 0.0}, {"color": "violet", "id": "zarubal-violet", "label": "zarubal-violet", "shape": "dot", "size": 0.0}, {"color": "gold", "id": "pax_telemanus-gold", "label": "pax_telemanus-gold", "shape": "dot", "size": 0.0}]);
+                  edges = new vis.DataSet([{"from": "adrius-gold", "to": "virginia-gold", "width": 2.3978952727983707}, {"from": "adrius-gold", "to": "darrow-red", "width": 2.1972245773362196}, {"from": "aja-gold", "to": "lysander-gold", "width": 3.4339872044851463}, {"from": "aja-gold", "to": "darrow-red", "width": 2.70805020110221}, {"from": "aja-gold", "to": "magnus-gold", "width": 1.0986122886681098}, {"from": "ajax-gold", "to": "lysander-gold", "width": 4.634728988229636}, {"from": "ajax-gold", "to": "atalantia-gold", "width": 2.1972245773362196}, {"from": "ajax-gold", "to": "atlas-gold", "width": 1.9459101490553132}, {"from": "ajax-gold", "to": "scorpio-gold", "width": 1.0986122886681098}, {"from": "alexandar-gold", "to": "darrow-red", "width": 4.04305126783455}, {"from": "alexandar-gold", "to": "lysander-gold", "width": 4.04305126783455}, {"from": "alexandar-gold", "to": "atlas-gold", "width": 2.3978952727983707}, {"from": "alexandar-gold", "to": "thraxa-gold", "width": 2.1972245773362196}, {"from": "alexandar-gold", "to": "felix-gold", "width": 1.0986122886681098}, {"from": "alia-obsidian", "to": "ragnar-obsidian", "width": 1.0986122886681098}, {"from": "alia-obsidian", "to": "sefi-obsidian", "width": 1.0986122886681098}, {"from": "amel-pink", "to": "ephraim-gray", "width": 1.9459101490553132}, {"from": "amel-pink", "to": "gudkind-obsidian", "width": 1.0986122886681098}, {"from": "amel-pink", "to": "sefi-obsidian", "width": 1.0986122886681098}, {"from": "apollonius-gold", "to": "lysander-gold", "width": 2.833213344056216}, {"from": "apollonius-gold", "to": "darrow-red", "width": 2.1972245773362196}, {"from": "apollonius-gold", "to": "magnus-gold", "width": 1.6094379124341003}, {"from": "asmodeus-gold", "to": "cassius-gold", "width": 1.0986122886681098}, {"from": "asmodeus-gold", "to": "cicero-gold", "width": 1.0986122886681098}, {"from": "asmodeus-gold", "to": "gorgo-obsidian", "width": 1.0986122886681098}, {"from": "atalantia-gold", "to": "lysander-gold", "width": 4.653960350157523}, {"from": "atalantia-gold", "to": "darrow-red", "width": 3.4965075614664802}, {"from": "atalantia-gold", "to": "virginia-gold", "width": 2.1972245773362196}, {"from": "atlas-gold", "to": "lysander-gold", "width": 3.4965075614664802}, {"from": "atlas-gold", "to": "darrow-red", "width": 3.044522437723423}, {"from": "braga-obsidian", "to": "ozgard-obsidian", "width": 1.0986122886681098}, {"from": "brea-red", "to": "lyria-red", "width": 1.0986122886681098}, {"from": "britannia-silver", "to": "virginia-gold", "width": 1.0986122886681098}, {"from": "cadus-orange", "to": "darrow-red", "width": 3.970291913552122}, {"from": "cadus-orange", "to": "colloway-blue", "width": 1.9459101490553132}, {"from": "cadus-orange", "to": "glirastes-orange", "width": 1.9459101490553132}, {"from": "cadus-orange", "to": "thraxa-gold", "width": 1.9459101490553132}, {"from": "cadus-orange", "to": "felix-gold", "width": 1.0986122886681098}, {"from": "cassius-gold", "to": "lysander-gold", "width": 3.367295829986474}, {"from": "cassius-gold", "to": "darrow-red", "width": 2.5649493574615367}, {"from": "cassius-gold", "to": "virginia-gold", "width": 2.1972245773362196}, {"from": "cassius-gold", "to": "lea-gold", "width": 1.0986122886681098}, {"from": "cicero-gold", "to": "lysander-gold", "width": 1.9459101490553132}, {"from": "clown-gold", "to": "virginia-gold", "width": 2.1972245773362196}, {"from": "clown-gold", "to": "sevro-gold", "width": 1.0986122886681098}, {"from": "colloway-blue", "to": "darrow-red", "width": 2.70805020110221}, {"from": "colloway-blue", "to": "felix-gold", "width": 1.0986122886681098}, {"from": "cormac-red", "to": "lyria-red", "width": 2.833213344056216}, {"from": "crastus-gold", "to": "drusilla-gold", "width": 1.0986122886681098}, {"from": "dago-red", "to": "darrow-red", "width": 1.0986122886681098}, {"from": "dancer-red", "to": "virginia-gold", "width": 3.295836866004329}, {"from": "dancer-red", "to": "pax_augustus-gold", "width": 1.9459101490553132}, {"from": "dancer-red", "to": "deanna-red", "width": 1.0986122886681098}, {"from": "darrow-red", "to": "thraxa-gold", "width": 4.574710978503383}, {"from": "darrow-red", "to": "lysander-gold", "width": 4.51085950651685}, {"from": "darrow-red", "to": "rhonna-red", "width": 4.007333185232471}, {"from": "darrow-red", "to": "sevro-gold", "width": 3.5553480614894135}, {"from": "darrow-red", "to": "virginia-gold", "width": 3.4339872044851463}, {"from": "darrow-red", "to": "glirastes-orange", "width": 3.367295829986474}, {"from": "darrow-red", "to": "pax_augustus-gold", "width": 3.1354942159291497}, {"from": "darrow-red", "to": "orion-blue", "width": 2.833213344056216}, {"from": "darrow-red", "to": "publius-copper", "width": 2.5649493574615367}, {"from": "darrow-red", "to": "victra-gold", "width": 2.3978952727983707}, {"from": "darrow-red", "to": "daxo-gold", "width": 2.1972245773362196}, {"from": "darrow-red", "to": "mickey-violet", "width": 2.1972245773362196}, {"from": "darrow-red", "to": "ephraim-gray", "width": 1.9459101490553132}, {"from": "darrow-red", "to": "felix-gold", "width": 1.9459101490553132}, {"from": "darrow-red", "to": "lea-gold", "width": 1.6094379124341003}, {"from": "darrow-red", "to": "eo-red", "width": 1.0986122886681098}, {"from": "darrow-red", "to": "marbles-green", "width": 1.0986122886681098}, {"from": "daxo-gold", "to": "virginia-gold", "width": 3.970291913552122}, {"from": "deanna-red", "to": "virginia-gold", "width": 1.6094379124341003}, {"from": "deanna-red", "to": "holiday-gray", "width": 1.0986122886681098}, {"from": "dido-gold", "to": "romulus-gold", "width": 1.9459101490553132}, {"from": "dido-gold", "to": "helios-gold", "width": 1.6094379124341003}, {"from": "dido-gold", "to": "lysander-gold", "width": 1.6094379124341003}, {"from": "diomedes-gold", "to": "lysander-gold", "width": 3.713572066704308}, {"from": "drusilla-gold", "to": "lysander-gold", "width": 2.3978952727983707}, {"from": "duke_of_hands-pink", "to": "virginia-gold", "width": 2.833213344056216}, {"from": "duke_of_hands-pink", "to": "harmony-red", "width": 1.0986122886681098}, {"from": "duke_of_hands-pink", "to": "lyria-red", "width": 1.0986122886681098}, {"from": "duke_of_hands-pink", "to": "sevro-gold", "width": 1.0986122886681098}, {"from": "duke_of_hands-pink", "to": "trigg-gray", "width": 1.0986122886681098}, {"from": "duke_of_hands-pink", "to": "victra-gold", "width": 1.0986122886681098}, {"from": "duncan-red", "to": "lyria-red", "width": 3.367295829986474}, {"from": "electra-gold", "to": "ephraim-gray", "width": 3.8918202981106265}, {"from": "electra-gold", "to": "pax_augustus-gold", "width": 3.295836866004329}, {"from": "electra-gold", "to": "victra-gold", "width": 1.9459101490553132}, {"from": "electra-gold", "to": "julia-gold", "width": 1.0986122886681098}, {"from": "eo-red", "to": "ragnar-obsidian", "width": 1.0986122886681098}, {"from": "ephraim-gray", "to": "sefi-obsidian", "width": 4.418840607796598}, {"from": "ephraim-gray", "to": "pax_augustus-gold", "width": 4.3694478524670215}, {"from": "ephraim-gray", "to": "ozgard-obsidian", "width": 4.110873864173311}, {"from": "ephraim-gray", "to": "xenophon-white", "width": 3.8918202981106265}, {"from": "ephraim-gray", "to": "volga-obsidian", "width": 3.8066624897703196}, {"from": "ephraim-gray", "to": "lyria-red", "width": 3.713572066704308}, {"from": "ephraim-gray", "to": "valdir-obsidian", "width": 3.6635616461296463}, {"from": "ephraim-gray", "to": "volsung_fa-obsidian", "width": 3.2188758248682006}, {"from": "ephraim-gray", "to": "freihild-obsidian", "width": 2.833213344056216}, {"from": "ephraim-gray", "to": "gudkind-obsidian", "width": 2.5649493574615367}, {"from": "ephraim-gray", "to": "victra-gold", "width": 2.3978952727983707}, {"from": "ephraim-gray", "to": "ragnar-obsidian", "width": 1.9459101490553132}, {"from": "ephraim-gray", "to": "trigg-gray", "width": 1.9459101490553132}, {"from": "exeter-brown", "to": "lysander-gold", "width": 2.3978952727983707}, {"from": "exeter-brown", "to": "silenius-gold", "width": 1.0986122886681098}, {"from": "exeter-brown", "to": "thraxa-gold", "width": 1.0986122886681098}, {"from": "felix-gold", "to": "thraxa-gold", "width": 1.6094379124341003}, {"from": "felix-gold", "to": "kalindora-gold", "width": 1.0986122886681098}, {"from": "felix-gold", "to": "orion-blue", "width": 1.0986122886681098}, {"from": "fitchner-gold", "to": "zan-blue", "width": 1.0986122886681098}, {"from": "freihild-obsidian", "to": "ozgard-obsidian", "width": 2.1972245773362196}, {"from": "freihild-obsidian", "to": "sefi-obsidian", "width": 1.9459101490553132}, {"from": "freihild-obsidian", "to": "valdir-obsidian", "width": 1.9459101490553132}, {"from": "glirastes-orange", "to": "lysander-gold", "width": 3.6635616461296463}, {"from": "harmony-red", "to": "lyria-red", "width": 3.1354942159291497}, {"from": "harmony-red", "to": "victra-gold", "width": 2.3978952727983707}, {"from": "helios-gold", "to": "lysander-gold", "width": 2.3978952727983707}, {"from": "holiday-gray", "to": "virginia-gold", "width": 4.110873864173311}, {"from": "holiday-gray", "to": "trigg-gray", "width": 1.6094379124341003}, {"from": "ignacius-gold", "to": "lysander-gold", "width": 2.3978952727983707}, {"from": "julia-gold", "to": "lysander-gold", "width": 1.0986122886681098}, {"from": "kalindora-gold", "to": "lysander-gold", "width": 4.709530201312334}, {"from": "kalindora-gold", "to": "rhone-gray", "width": 2.1972245773362196}, {"from": "kalindora-gold", "to": "seraphina-gold", "width": 1.9459101490553132}, {"from": "karnus-gold", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "kavax-gold", "to": "virginia-gold", "width": 3.295836866004329}, {"from": "kavax-gold", "to": "niobe-gold", "width": 2.1972245773362196}, {"from": "kavax-gold", "to": "lyria-red", "width": 1.9459101490553132}, {"from": "kavax-gold", "to": "sevro-gold", "width": 1.9459101490553132}, {"from": "kieran-red", "to": "volga-obsidian", "width": 1.0986122886681098}, {"from": "lea-gold", "to": "lyria-red", "width": 1.0986122886681098}, {"from": "liam-red", "to": "lyria-red", "width": 2.70805020110221}, {"from": "lilath-gold", "to": "virginia-gold", "width": 3.6635616461296463}, {"from": "lorn-gold", "to": "lysander-gold", "width": 2.70805020110221}, {"from": "lyria-red", "to": "volga-obsidian", "width": 5.043425116919247}, {"from": "lyria-red", "to": "victra-gold", "width": 4.653960350157523}, {"from": "lyria-red", "to": "ulysses-gold", "width": 2.5649493574615367}, {"from": "lyria-red", "to": "pax_augustus-gold", "width": 2.1972245773362196}, {"from": "lyria-red", "to": "vanna-red", "width": 2.1972245773362196}, {"from": "lyria-red", "to": "tails-red", "width": 1.9459101490553132}, {"from": "lyria-red", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "lyria-red", "to": "maeve-red", "width": 1.6094379124341003}, {"from": "lyria-red", "to": "pandora-gold", "width": 1.6094379124341003}, {"from": "lyria-red", "to": "paxton-gray", "width": 1.6094379124341003}, {"from": "lyria-red", "to": "mora-red", "width": 1.0986122886681098}, {"from": "lyria-red", "to": "torrow-red", "width": 1.0986122886681098}, {"from": "lysander-gold", "to": "rhone-gray", "width": 3.6635616461296463}, {"from": "lysander-gold", "to": "seraphina-gold", "width": 3.4339872044851463}, {"from": "lysander-gold", "to": "octavia-gold", "width": 3.044522437723423}, {"from": "lysander-gold", "to": "pytha-blue", "width": 2.9444389791664403}, {"from": "lysander-gold", "to": "seneca-gold", "width": 2.833213344056216}, {"from": "lysander-gold", "to": "rhonna-red", "width": 2.3978952727983707}, {"from": "lysander-gold", "to": "silenius-gold", "width": 1.9459101490553132}, {"from": "lysander-gold", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "lysander-gold", "to": "nero-gold", "width": 1.0986122886681098}, {"from": "lysander-gold", "to": "scorpio-gold", "width": 1.0986122886681098}, {"from": "magnus-gold", "to": "romulus-gold", "width": 1.0986122886681098}, {"from": "mickey-violet", "to": "virginia-gold", "width": 2.3978952727983707}, {"from": "niobe-gold", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "ozgard-obsidian", "to": "pax_augustus-gold", "width": 1.9459101490553132}, {"from": "pandora-gold", "to": "victra-gold", "width": 1.0986122886681098}, {"from": "pax_augustus-gold", "to": "virginia-gold", "width": 3.8918202981106265}, {"from": "pax_augustus-gold", "to": "victra-gold", "width": 2.5649493574615367}, {"from": "pax_augustus-gold", "to": "sefi-obsidian", "width": 2.3978952727983707}, {"from": "publius-copper", "to": "virginia-gold", "width": 3.295836866004329}, {"from": "publius-copper", "to": "zan-blue", "width": 1.6094379124341003}, {"from": "regulus-silver", "to": "virginia-gold", "width": 2.3978952727983707}, {"from": "rollo-red", "to": "virginia-gold", "width": 1.0986122886681098}, {"from": "sefi-obsidian", "to": "valdir-obsidian", "width": 2.833213344056216}, {"from": "sefi-obsidian", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "sevro-gold", "to": "virginia-gold", "width": 3.970291913552122}, {"from": "theodora-pink", "to": "virginia-gold", "width": 1.9459101490553132}, {"from": "theodora-pink", "to": "trigg-gray", "width": 1.0986122886681098}, {"from": "thraxa-gold", "to": "tongueless-obsidian", "width": 1.0986122886681098}, {"from": "trigg-gray", "to": "virginia-gold", "width": 1.6094379124341003}, {"from": "ulysses-gold", "to": "victra-gold", "width": 1.6094379124341003}, {"from": "ulysses-gold", "to": "volga-obsidian", "width": 1.0986122886681098}, {"from": "victra-gold", "to": "volga-obsidian", "width": 3.1354942159291497}, {"from": "victra-gold", "to": "virginia-gold", "width": 2.833213344056216}, {"from": "virginia-gold", "to": "zan-blue", "width": 1.6094379124341003}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
