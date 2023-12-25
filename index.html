@@ -4,24 +4,214 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>Index Page</title>
+  <title>RR Social Networks</title>
 </head>
 <body>
-  <div class="navbar">
-    <a href="index.html" class="active">Home</a>
-    <a href="rr_graph.html">RR Graph</a>
-    <a href="gs_graph.html">GS Graph</a>
-    <a href="ms_graph.html">MS Graph</a>
-    <a href="ig_graph.html">IG Graph</a>
-    <a href="da_graph.html">DA Graph</a>
-    <a href="lb_graph.html">LB Graph</a>
+    
 
-  </div>
 
   <div class="content">
     <!-- Your page content goes here -->
-    <h1>Welcome to the Index Page</h1>
-    <p>This is the main content of your index page.</p>
+    <h1>RR Social Networks</h1>
+
+    <p>
+        The social network from each individual book is available below.
+    </p>
+
+    <ol>
+            
+        <li><a href="rr_graph.html">Red Rising</a></li>
+        
+        <li><a href="gs_graph.html">Golden Son</a></li>
+
+        <li><a href="ms_graph.html">Morning Star</a></li>
+
+        <li><a href="ig_graph.html">Iron Gold</a></li>
+
+        <li><a href="da_graph.html">Dark Age</a></li>
+
+        <li><a href="lb_graph.html">Lightbringer</a></li>
+    
+    </ol>
+
+    <p>
+        Each social network was computed by counting the number of times each pair of characters appeared within 
+        30 tokens (words) of each other in each book.  The node size for each character scales logarithmically with 
+        the number of mentions of the character, as do the edge widths for each pair.  The colors of the nodes are based on 
+        the character's "Color" in the books.<br><br>
+
+        I highly recommend reading each book before viewing its social network or reading my general description below, as they 
+        obviously contain spoilers.<br><br>
+
+        If you are interested, the source code for this project is available on my 
+        <a href="https://github.com/LoganTML/RR-Visualization">GitHub</a>.  I used all_networks.ipynb to generate the social networks, 
+        and the other files include the .html output files, and the .txt files that contain the modified books.
+
+        <details>
+            <summary>More in-depth description (with spoilers)</summary><br>
+            
+            Since the books are written in first person (from Darrow's perspective for books 1-3, then from several different 
+            perspectives), the POV characters were mainly referred to as "I", "me", "my", "we", etc.  I manually added the text 
+            "POV-[character]" each time it switched, and then automatically changed each use of first person language into the 
+            POV character's name.  Additionally, many characters had several nicknames (e.g. Darrow is "Darrow", "Reaper", 
+            "Andromedus", etc.).  I manually added each nickname to a dict "name_mapping", then automatically replaced each 
+            instance of a character's actual name or nicknames with the character's "main" name that I assigned them (e.g. 
+            Darrow is "darrow-red", Virginia/Mustang is "virginia-gold", etc.).<br><br> 
+            
+            I initially tried using NLTK to identify characters, 
+            but there were problems with this- many characters were repeated under different names, and many nouns were identified as characters (e.g. 
+            a SlingBlade).  Two characters also share a name- Pax and Pax.  To simplify things, I ensured that all instances of Pax 
+            in books 1-3 refer to the first, pax_telemanus-gold, and those in 4-6 refer to the second, pax_augustus-gold.  Manually      
+            defining this naming convention for all ~275 characters in the series (according to 
+            <a href="https://red-rising.fandom.com/wiki/Category:Characters">RR Wiki</a>) was time consuming, but it was the best way to 
+            ensure that the social networks were accurate.<br><br>
+
+            One other interesting note is that the social networks for books 4-6 are significantly less dense than those for 
+            books 1-3.  The existence of 5 POV characters (Darrow, Ephraim, Lyria, Lysander, and Virginia) instead of 1 resulted in 
+            each character having a cluster of side characters around them, many of which were not connected to any other main characters.  
+            Some characters transcended this, including Sevro, Volga, Victra, Pax (Augustus), Atalantia, and Cassius, who were all 
+            connected to at least 2 of the 5 POV characters.  This is reflected in the social networks, and shows how these characters 
+            impact many different storylines.<br><br>
+
+            The last problem I encountered was that there was significant bleed between chapters- the last few sentences in one POV would 
+            often create connections to the first after a POV switch.  After splitting the books at each POV switch and replacing 
+            the first-person language, I rejoined the paragraphs with the word " x " repeated 30 times.  This ensured that there were no 
+            connections across chapters.<br><br>
+
+            After creating the graphs, I used networkx to compute several different centrality measures for each character across all 
+            6 books- betweenness, eigenvector, degree, and closeness.  I then normalized each by dividing by the maximum value for each 
+            (which was Darrow for all 4 measures).  I then added these 4 values together into a single "aggregated_centrality" dictionary, 
+            to find the characters that were most central across all 6 books.            
+            
+            The top 20 characters, by aggregated_centrality, are shown below.<br><br>
+
+            <details>
+                <summary>Top 20 characters by aggregated centrality</summary><br>
+                <!-- make html table with #, character name, and value -->
+                <table>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Character</th>
+                        <th>Aggregated Centrality</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Darrow</td>
+                        <td>4.00</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Virginia</td>
+                        <td>1.81</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Lysander</td>
+                        <td>1.68</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Sevro</td>
+                        <td>1.39</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Adrius</td>
+                        <td>1.13</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Cassius</td>
+                        <td>1.12</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Victra</td>
+                        <td>1.06</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Lyria</td>
+                        <td>0.93</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Fitchner</td>
+                        <td>0.90</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Aja</td>
+                        <td>0.86</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Dancer</td>
+                        <td>0.85</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Ragnar</td>
+                        <td>0.83</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Lilath</td>
+                        <td>0.80</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Roque</td>
+                        <td>0.80</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Lorn</td>
+                        <td>0.78</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Clown</td>
+                        <td>0.78</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Ephraim</td>
+                        <td>0.77</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Octavia</td>
+                        <td>0.70</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>Kavax</td>
+                        <td>0.68</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Kieran</td>
+                        <td>0.68</td>
+                    </tr>
+
+                </table>
+
+                <p>These measurements are obviously not precise or rigorous, and it is clear that they are heavily biased by 
+                    characters in the earlier books- side characters in the first three books sometimes had higher centrality than even  
+                    POV characters had in the later books (Ephraim had an eigenvector centrality of 0.088 in Iron Gold, which is fewer 
+                    than that of 21 different characters in Book 1, Red Rising).  Thus, characters introduced earlier are overrepresented in their 
+                    aggregated centrality.  Characters like Aja, Ragnar, Roque, and Lorn are all dead by the end of book 3, yet their centrality 
+                    in the earlier books and occasional mentions in the later books are enough to place them above even Ephraim, who is a major POV 
+                    character for two entire books.  More rigorous analysis could more accurately determine the most central characters, but this 
+                    provides a fairly accurate estimate for now.<br><br>
+                </p>
+            </details>
+        </details>
+
+    </p><br>
+
+    <p>All rights to the Red Rising saga and its IP belong to <a href="https://www.piercebrown.com/">Pierce Brown</a>.</p>
   </div>
 </body>
 </html>
