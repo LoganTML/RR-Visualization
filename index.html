@@ -34,10 +34,12 @@
         Each social network was computed by counting the number of times each pair of characters appeared within 
         30 tokens (words) of each other in each book.  The node size for each character scales logarithmically with 
         the number of mentions of the character, as do the edge widths for each pair.  The colors of the nodes are based on 
-        the character's "Color" in the books.  The networks were created and visualized using networkx and pyvis.<br><br>
+        the character's "Color" in the books.  The networks were created and visualized using networkx and pyvis, and all 
+        algorithms used (betweenness/eigenvector/degree/closeness centrality and Louvain Community Partitions) were used 
+        through networkx.<br><br>
 
         I highly recommend reading each book before viewing its social network or reading my general description below, as they 
-        contain spoilers for the entire series.<br><br>
+        do contain spoilers.<br><br>
 
         If you are interested, the source code for this project is available on my 
         <a href="https://github.com/LoganTML/RR-Visualization">GitHub</a>.  I used all_networks.ipynb to generate the social networks.  
@@ -205,7 +207,58 @@
                     character for two entire books.  More rigorous analysis could more accurately determine the most central characters, but this 
                     provides a fairly accurate estimate for now.<br><br>
                 </p>
-            </details>
+            </details><br><br>
+
+            Finally, I used the Louvain Community Detection algorithm in networkx to see how accurate its partitions were.  There is no 
+            concrete community data to compare with, but the results were fairly accurate.  For Red Rising, the algorithm was able to 
+            identify many of the major cliques- when I set the resolution to 3.0, it identified the communities:
+            <details>
+                <summary>Louvain Communities in Red Rising</summary>
+                <ul>
+                    <li>{'antonia-gold', 'cipio-gold'}</li>
+                    <li>{'cassandra-gold', 'titus-red', 'vixus-gold', 'pollux-gold'}</li>
+                    <li>{'mickey-violet', 'modjob-brown', 'harmony-red', 'dancer-red'}</li>
+                    <li>{'dio-red', 'eo-red'}</li>
+                    <li>{'thistle-gold', 'lea-gold', 'quinn-gold', 'roque-gold'}</li>
+                    <li>{'kieran-red', 'leanna-red'}</li>
+                    <li>{'adrius-gold', 'lilath-gold'}</li>
+                    <li>{'nyla-gold', 'milia-gold', 'dax-gold'}</li>
+                    <li>{'pax_telemanus-gold', 'novas-gold'}</li>
+                    <li>{'clown-gold', 'weed-gold', 'pebble-gold'}</li>
+                    <li>{'tamara-gold', 'tactus-gold'} </li>
+                </ul>
+            </details><br><br>
+            
+            
+            Interestingly, neither Darrow, Cassius, nor Sevro were identified as being in any of the communities.  This is likely because 
+            they all have extremely high centrality, and the algorithm could not move any of them into a community without significantly 
+            decreasing the modularity of the partition.  Increasing the threshold may result in more accurate communities.<br><br>
+
+            However, for the latter half of the series, even with the same resolution and threshold, the algorithm returned significantly 
+            larger communities, which were extremely accurate to the book.  In Iron Gold, the following community partitions were returned 
+            with a resolution of 3.0:
+
+            <details>
+                <summary>Louvain Communities in Iron Gold</summary>
+                <ul>
+                    <li>{'alexandar-gold', 'winkle-green'}</li>
+                    <li>{'cassius-gold', 'lysander-gold', 'gaia-gold', 'dido-gold', 'pandora-gold', 'revus-gold', 'seraphina-gold', 'goroth-obsidian', 'romulus-gold', 'diomedes-gold', 'pytha-blue'}</li>
+                    <li>{'darrow-red', 'colloway-blue', 'tharsus-gold', 'sevro-gold', 'publius-copper', 'virginia-gold', 'victra-gold', 'thraxa-gold', 'julia-gold', 'apollonius-gold', 'cedric-copper', 'kieran-red', 'tongueless-obsidian', 'rhonna-red', 'dan-gray', 'sefi-obsidian', 'orion-blue'}</li>
+                    <li>{'pax_augustus-gold', 'electra-gold'}</li>
+                    <li>{'ephraim-gray', 'cyra-green', 'holiday-gray', 'volga-obsidian', 'gorgo-obsidian', 'kobachi-green', 'oslo-white', 'dano-red', 'trigg-gray'}</li>
+                    <li>{'hjornir-obsidian', 'marius-gold'}</li>
+                    <li>{'brutus-gold', 'octavia-gold', 'lorn-gold', 'silenius-gold'}</li>
+                    <li>{'daxo-gold', 'barlow-red', 'kavax-gold', 'dancer-red', 'liam-red', 'tiran-red', 'theodora-pink', 'lyria-red', 'liago-yellow', 'niobe-gold'}</li>
+                    <li>{'magnus-gold', 'atalantia-gold'}</li>
+                    <li>{'aja-gold', 'ragnar-obsidian', 'lilath-gold', 'wulfgar-obsidian', 'fitchner-gold', 'roque-gold', 'adrius-gold', 'atlas-gold'}</li>
+                    <li>{'pebble-gold', 'clown-gold', 'milia-gold', 'weed-gold'}</li>
+                </ul>
+            </details><br><br>
+
+            With the exception of the penultimate group (Ragnar, Lilath, Fitchner, Aja and Atlas certainly should not be in a single community), each community 
+            is very accurate to the set of allies in the book.  The hyperparameters could likely be optimized if an optimal set of partitions/factions were created to compare against, 
+            but for now I will simply be impressed with the algorithm's performance.<br><br>
+
         </details>
 
     </p><br>
